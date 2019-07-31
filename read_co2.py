@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import sys, fcntl, time
+import sys, fcntl, time, os
 import paho.mqtt.client as mqtt
+
 
 
 def decrypt(key,  data):
