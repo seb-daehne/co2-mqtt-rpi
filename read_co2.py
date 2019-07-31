@@ -36,8 +36,19 @@ def hd(d):
 if __name__ == "__main__":
     # Key retrieved from /dev/random, guaranteed to be random ;)
     key = [0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96]
+
+    usb_device = os.environ['USB_DEVICE']
+    mqtt_server = os.environ['MQTT_SERVER']
+    mqtt_port = os.environ['MQTT_PORT']
+    mqtt_topic = os.environ['MQTT_TOPIC']
     
-    fp = open(sys.argv[1], "a+b",  0)
+    print("+ start co2 monitor")
+    print("- usb device: ", usb_device)
+    print("- mqtt server: ", mqtt_server )
+    print("- mqtt port: ", mqtt_port)
+    print("- mqtt topic: ", mqtt_topic)
+    
+    fp = open(usb_device, "a+b",  0)
     
     HIDIOCSFEATURE_9 = 0xC0094806
     set_report = "\x00" + "".join(chr(e) for e in key)
@@ -61,10 +72,10 @@ if __name__ == "__main__":
             ## From http://co2meters.com/Documentation/AppNotes/AN146-RAD-0401-serial-communication.pdf
             if (0x50 in values):
                 if (time.time() - start_time > publish_interval_in_s):
-                    print("publish to mqtt: " + str(values[0x50]))
+                    print("publish data to mqtt: " + str(values[0x50]))
                     client = mqtt.Client("co2")
-                    client.connect("pandora.bks.rshc.de")
-                    client.publish("co2/co2_level_wohnzimmer", values[0x50])
+                    client.connect(mqtt_server)
+                    client.publish(mqtt_topic, values[0x50])
                     client.disconnect()
                     start_time = time.time()
                     print("\n")
