@@ -26,8 +26,8 @@ spec:
     spec:
       containers:
       - env:
-        - name: USB_DEVICe
-          value: /dev/hiddraw0
+        - name: USB_DEVICE
+          value: /dev/hidraw0
         - name:  MQTT_SERVER
           value: 192.168.1.1
         - name: MQTT_PORT
