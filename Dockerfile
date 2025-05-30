@@ -1,4 +1,4 @@
-FROM  arm32v6/alpine:3.21
+FROM  arm32v6/alpine:3.22
 #FROM  alpine:3.9
 ADD qemu-arm-static /usr/bin
 
